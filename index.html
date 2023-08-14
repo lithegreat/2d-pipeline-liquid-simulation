@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LiquidFun Fluid Simulation</title>
+  <script src="liquidfun-1.1.0\liquidfun\Box2D\lfjs\liquidfun.js"></script>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <script>
+    var world = new b2World(new b2Vec2(0, 10));
+
+    var particleSystemDef = new b2ParticleSystemDef();
+    var particleSystem = world.CreateParticleSystem(particleSystemDef);
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+
+    function drawParticles() {
+      var particlePositions = particleSystem.GetPositionBuffer();
+      var particleRadius = particleSystem.GetRadius();
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      context.fillStyle = 'blue';
+      for (var i = 0; i < particlePositions.length; i += 2) {
+        var x = particlePositions[i] * 10;  // Scale up for visualization
+        var y = particlePositions[i + 1] * 10;  // Scale up for visualization
+        context.beginPath();
+        context.arc(x, y, particleRadius * 10, 0, 2 * Math.PI);
+        context.fill();
+        context.closePath();
+      }
+    }
+
+    function updateWorld() {
+      world.Step(1 / 60, 10, 10);
+      drawParticles();
+      requestAnimationFrame(updateWorld);
+    }
+
+    updateWorld();
+  </script>
+</body>
+</html>
