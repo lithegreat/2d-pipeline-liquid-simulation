@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LiquidFun Rendering Example</title>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="600"></canvas>
+
+  <script src="..\liquidfun-1.1.0\liquidfun\Box2D\lfjs\liquidfun.js"></script>
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // 创建世界
+    const world = new b2World(new b2Vec2(0, 10)); // 创建物理世界，设置重力
+
+    // 创建地面
+    const groundDef = new b2BodyDef();
+    const ground = world.CreateBody(groundDef);
+    const groundShape = new b2PolygonShape();
+    groundShape.SetAsBox(400, 10);
+    ground.CreateFixture(groundShape, 0);
+
+    // 创建小球
+    const ballDef = new b2BodyDef();
+    ballDef.type = b2_dynamicBody; // 动态刚体
+    ballDef.position.Set(100, 50);
+    const ball = world.CreateBody(ballDef);
+    const ballShape = new b2CircleShape(20);
+    const ballFixture = new b2FixtureDef();
+    ballFixture.shape = ballShape;
+    ballFixture.density = 1;
+    ballFixture.restitution = 0.7; // 反弹系数
+    ball.CreateFixture(ballFixture);
+
+    // 更新渲染
+    function render() {
+      world.Step(1 / 60, 10, 10); // 物理模拟步长
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let body = world.GetBodyList(); body; body = body.GetNext()) {
+        const position = body.GetPosition();
+        const angle = body.GetAngle();
+
+        ctx.save();
+        ctx.translate(position.x, position.y);
+        ctx.rotate(angle);
+
+        if (body.GetFixtureList().GetShape() instanceof b2CircleShape) {
+          ctx.beginPath();
+          ctx.arc(0, 0, body.GetFixtureList().GetShape().m_radius, 0, Math.PI * 2);
+          ctx.fillStyle = "blue";
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // 开始渲染循环
+    render();
+  </script>
+</body>
+</html>
