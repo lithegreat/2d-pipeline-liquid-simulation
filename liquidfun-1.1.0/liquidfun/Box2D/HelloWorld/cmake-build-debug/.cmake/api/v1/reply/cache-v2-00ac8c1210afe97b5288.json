@@ -67,7 +67,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug"
+			"value" : "c:/Users/lithe/\u6587\u6863/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -671,7 +671,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/lithe/\u6587\u6863/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -743,7 +743,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld"
+			"value" : "C:/Users/lithe/\u6587\u6863/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1387,7 +1387,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug"
+			"value" : "C:/Users/lithe/\u6587\u6863/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug"
 		},
 		{
 			"name" : "Project_IS_TOP_LEVEL",
@@ -1411,7 +1411,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld"
+			"value" : "C:/Users/lithe/\u6587\u6863/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
