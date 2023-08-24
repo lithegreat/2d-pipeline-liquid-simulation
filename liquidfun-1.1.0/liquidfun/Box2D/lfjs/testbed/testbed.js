@@ -49,14 +49,14 @@ function initTestbed() {
 
   // hack
   renderer = new Renderer();
-  var gravity = new b2Vec2(0, -10);
+  var gravity = new b2Vec2(0, 0);
   world = new b2World(gravity);
   Testbed();
 }
 
 function testSwitch(testName) {
   ResetWorld();
-  world.SetGravity(new b2Vec2(0, -10));
+  world.SetGravity(new b2Vec2(0, 0));
   var bd = new b2BodyDef;
   g_groundBody = world.CreateBody(bd);
   test = new window[testName];
@@ -66,70 +66,10 @@ function Testbed(obj) {
   // Init world
   //GenerateOffsets();
   //Init
-  var that = this;
-  document.addEventListener('keypress', function(event) {
-    if (test.Keyboard !== undefined) {
-      test.Keyboard(String.fromCharCode(event.which) );
-    }
-  });
-  document.addEventListener('keyup', function(event) {
-    if (test.KeyboardUp !== undefined) {
-      test.KeyboardUp(String.fromCharCode(event.which) );
-    }
-  });
-
-  document.addEventListener('mousedown', function(event) {
-    var p = getMouseCoords(event);
-    var aabb = new b2AABB;
-    var d = new b2Vec2;
-
-    d.Set(0.01, 0.01);
-    b2Vec2.Sub(aabb.lowerBound, p, d);
-    b2Vec2.Add(aabb.upperBound, p, d);
-
-    var queryCallback = new QueryCallback(p);
-    world.QueryAABB(queryCallback, aabb);
-
-    if (queryCallback.fixture) {
-      var body = queryCallback.fixture.body;
-      var md = new b2MouseJointDef;
-      md.bodyA = g_groundBody;
-      md.bodyB = body;
-      md.target = p;
-      md.maxForce = 1000 * body.GetMass();
-      that.mouseJoint = world.CreateJoint(md);
-      body.SetAwake(true);
-    }
-    if (test.MouseDown !== undefined) {
-      test.MouseDown(p);
-    }
-
-  });
-
-  document.addEventListener('mousemove', function(event) {
-    var p = getMouseCoords(event);
-    if (that.mouseJoint) {
-      that.mouseJoint.SetTarget(p);
-    }
-    if (test.MouseMove !== undefined) {
-      test.MouseMove(p);
-    }
-  });
-
-  document.addEventListener('mouseup', function(event) {
-    if (that.mouseJoint) {
-      world.DestroyJoint(that.mouseJoint);
-      that.mouseJoint = null;
-    }
-    if (test.MouseUp !== undefined) {
-      test.MouseUp(getMouseCoords(event));
-    }
-  });
-
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  testSwitch("TestWaveMachine");
+  testSwitch("TestMyTest");
 
   render();
 }
