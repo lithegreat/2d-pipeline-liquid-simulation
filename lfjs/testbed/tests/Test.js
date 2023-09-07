@@ -1,4 +1,4 @@
-function TestMyTest() {
+function Test() {
     camera.position.x = 0
     camera.position.y = 0;
     camera.position.z = 10;
@@ -36,6 +36,7 @@ function TestMyTest() {
 
     // Emit particles into the pipe
     var pgd1 = new b2ParticleGroupDef();//Group 1
+    pgd1.surfaceTensionNormalStrength = 1;
     var emitterShape = new b2CircleShape();
     emitterShape.radius = 0.5;
     emitterShape.position.Set(-4, 1);
@@ -46,6 +47,7 @@ function TestMyTest() {
     particleSystem.CreateParticleGroup(pgd1);
     
     var pgd2 = new b2ParticleGroupDef();//Group 2
+    pgd2.surfaceTensionNormalStrength = 0.5;
     var emitterShape = new b2CircleShape();
     emitterShape.radius = 0.5;
     emitterShape.position.Set(-4, -1);

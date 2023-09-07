@@ -54,12 +54,12 @@ function initTestbed() {
   Testbed();
 }
 
-function testSwitch(testName) {
+function testSwitch(Name) {
   ResetWorld();
   world.SetGravity(new b2Vec2(0, 0));
   var bd = new b2BodyDef;
   g_groundBody = world.CreateBody(bd);
-  test = new window[testName];
+  test = new window[Name];
 }
 
 function Testbed(obj) {
@@ -69,7 +69,7 @@ function Testbed(obj) {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  testSwitch("TestMyTest");
+  testSwitch("Test");
 
   render();
 }

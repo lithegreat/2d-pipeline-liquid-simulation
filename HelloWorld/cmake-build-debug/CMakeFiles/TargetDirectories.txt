@@ -1,3 +1,0 @@
-C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug/CMakeFiles/HelloWorld.dir
-C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/lithe/Documents/2d-pipline-liquid-simulation/liquidfun-1.1.0/liquidfun/Box2D/HelloWorld/cmake-build-debug/CMakeFiles/rebuild_cache.dir
