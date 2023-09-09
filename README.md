@@ -1,3 +1,3 @@
-# 2d-pipline-liquid-simulation
+# 2d-pipeline-liquid-simulation
 
-Ingeneurpraxis at TUM
+Ingenieurpraxis at TUM
