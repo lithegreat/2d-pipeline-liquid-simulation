@@ -69,7 +69,7 @@ function Testbed(obj) {
 
   window.addEventListener( 'resize', onWindowResize, false );
 
-  testSwitch("Test");
+  testSwitch("Demo1");
 
   render();
 }
