@@ -4,7 +4,7 @@ function Demo1() {
     camera.position.y = 0
     camera.position.z = 10
 
-    //Create border
+    // Create border
     let borderDef = new b2BodyDef
     let border = world.CreateBody(borderDef)
     let borderShape = new b2ChainShape()
@@ -62,7 +62,6 @@ function Demo1() {
     pgd2.color.Set(0, 255, 0, 255)
     pgd2.linearVelocity.Set(0.1, 0)
     particleSystem.CreateParticleGroup(pgd2)
-
 
     // testbed specific
     renderer.updateColorParticles = true
