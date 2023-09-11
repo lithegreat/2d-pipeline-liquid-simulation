@@ -1,4 +1,4 @@
-// 2 particle groups with different color mix together
+// 2 particle systems with different color don't mix
 function Demo1() {
     camera.position.x = 0
     camera.position.y = 0
@@ -35,11 +35,11 @@ function Demo1() {
     pipeShape.CreateLoop()
     pipe.CreateFixtureFromShape(pipeShape, 0.0)
 
-    // Create particle system
-    let particleSystemDef = new b2ParticleSystemDef()
-    particleSystemDef.radius = 0.01
-    particleSystemDef.dampingStrength = 0.5
-    let particleSystem = world.CreateParticleSystem(particleSystemDef)
+    // Create particle system 1
+    let particleSystemDef1 = new b2ParticleSystemDef()
+    particleSystemDef1.radius = 0.01
+    particleSystemDef1.dampingStrength = 0.5
+    let particleSystem1 = world.CreateParticleSystem(particleSystemDef1)
 
     // particle group 1
     let pgd1 = new b2ParticleGroupDef()
@@ -50,7 +50,13 @@ function Demo1() {
     pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd1.color.Set(255, 0, 0, 255)
     pgd1.linearVelocity.Set(0.1, 0)
-    particleSystem.CreateParticleGroup(pgd1)
+    particleSystem1.CreateParticleGroup(pgd1)
+
+    // Create particle system 2
+    let particleSystemDef2 = new b2ParticleSystemDef()
+    particleSystemDef2.radius = 0.01
+    particleSystemDef2.dampingStrength = 0.5
+    let particleSystem2 = world.CreateParticleSystem(particleSystemDef2)
 
     // particle group 2
     let pgd2 = new b2ParticleGroupDef()
@@ -61,7 +67,7 @@ function Demo1() {
     pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd2.color.Set(0, 255, 0, 255)
     pgd2.linearVelocity.Set(0.1, 0)
-    particleSystem.CreateParticleGroup(pgd2)
+    particleSystem2.CreateParticleGroup(pgd2)
 
 
     // testbed specific
