@@ -77,22 +77,23 @@ Demo1.prototype.CreateContinuousParticle = function() {
     pd.flags = this.particleFlags;
     pd.groupFlags = this.groupFlags;
     pd.color = particleColors[this.colorIndex];
+    this.lastGroup.GetGroupFlags()
     
     if (this.lastGroup !== null) {
         pd.group = this.lastGroup;
     }
     
-    this.particleSystem.CreateParticleGroup(pd);
-    }
+    this.lastGroup = this.particleSystem.CreateParticleGroup(pd);
+}
     
     // 在模拟循环中定期创建新的粒子
-    function simulateContinuousFlow() {
+function simulateContinuousFlow() {
         testInstance.CreateContinuousParticle();
     
         // 在这里可以添加代码来模拟粒子的流动和互动逻辑
     
         requestAnimationFrame(simulateContinuousFlow);
-    }
+}
     
     // 启动连续流动的模拟
     simulateContinuousFlow();
