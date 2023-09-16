@@ -135,17 +135,3 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
   threeRenderer.setSize( window.innerWidth, window.innerHeight );
 }
-
-function getMouseCoords(event) {
-  var mouse = new THREE.Vector3();
-  mouse.x = (event.clientX / windowWidth) * 2 - 1;
-  mouse.y = -(event.clientY / windowHeight) * 2 + 1;
-  mouse.z = 0.5;
-
-  projector.unprojectVector(mouse, camera);
-  var dir = mouse.sub(camera.position).normalize();
-  var distance = -camera.position.z / dir.z;
-  var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-  var p = new b2Vec2(pos.x, pos.y);
-  return p;
-}
