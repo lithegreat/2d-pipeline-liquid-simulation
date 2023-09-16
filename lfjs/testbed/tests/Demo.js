@@ -1,13 +1,13 @@
-// 2 particle systems with different color don't mix
-function Demo1() {
+// 2 particle groups with different color mix together
+function Demo() {
     camera.position.x = 0
     camera.position.y = 0
     camera.position.z = 10
 
-    //Create border
-    let borderDef = new b2BodyDef
-    let border = world.CreateBody(borderDef)
-    let borderShape = new b2ChainShape()
+    // Create border
+    var borderDef = new b2BodyDef
+    var border = world.CreateBody(borderDef)
+    var borderShape = new b2ChainShape()
     borderShape.vertices = [
         new b2Vec2(-5, -2),
         new b2Vec2(5, -2),
@@ -18,9 +18,9 @@ function Demo1() {
     border.CreateFixtureFromShape(borderShape, 0.0)
 
     // Create pipe
-    let pipeDef = new b2BodyDef
-    let pipe = world.CreateBody(pipeDef)
-    let pipeShape = new b2ChainShape()
+    var pipeDef = new b2BodyDef
+    var pipe = world.CreateBody(pipeDef)
+    var pipeShape = new b2ChainShape()
     pipeShape.vertices = [
         new b2Vec2(0, 0),
         new b2Vec2(-5, -1.75),
@@ -35,41 +35,38 @@ function Demo1() {
     pipeShape.CreateLoop()
     pipe.CreateFixtureFromShape(pipeShape, 0.0)
 
-    // Create particle system 1
-    let particleSystemDef1 = new b2ParticleSystemDef()
-    particleSystemDef1.radius = 0.01
-    particleSystemDef1.dampingStrength = 0.5
-    let particleSystem1 = world.CreateParticleSystem(particleSystemDef1)
+    // Create particle system
+    var particleSystemDef = new b2ParticleSystemDef()
+    particleSystemDef.radius = 0.01
+    particleSystemDef.dampingStrength = 0.5
+    this.particleSystem = world.CreateParticleSystem(particleSystemDef)
 
     // particle group 1
-    let pgd1 = new b2ParticleGroupDef()
-    let particleShape1 = new b2CircleShape()
+    var pgd1 = new b2ParticleGroupDef()
+    var particleShape1 = new b2CircleShape()
     particleShape1.radius = 0.117
     particleShape1.position.Set(-4.64, -1.75)
     pgd1.shape = particleShape1
     pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd1.color.Set(255, 0, 0, 255)
     pgd1.linearVelocity.Set(0.1, 0)
-    particleSystem1.CreateParticleGroup(pgd1)
-
-    // Create particle system 2
-    let particleSystemDef2 = new b2ParticleSystemDef()
-    particleSystemDef2.radius = 0.01
-    particleSystemDef2.dampingStrength = 0.5
-    let particleSystem2 = world.CreateParticleSystem(particleSystemDef2)
+    particleSystem.CreateParticleGroup(pgd1)
 
     // particle group 2
-    let pgd2 = new b2ParticleGroupDef()
-    let particleShape2 = new b2CircleShape()
+    var pgd2 = new b2ParticleGroupDef()
+    var particleShape2 = new b2CircleShape()
     particleShape2.radius = 0.117
     particleShape2.position.Set(-4.64, 1.75)
     pgd2.shape = particleShape2
     pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd2.color.Set(0, 255, 0, 255)
     pgd2.linearVelocity.Set(0.1, 0)
-    particleSystem2.CreateParticleGroup(pgd2)
-
+    particleSystem.CreateParticleGroup(pgd2)
 
     // testbed specific
     renderer.updateColorParticles = true
+
+    // 设置定时函数或循环，以便继续创建新的粒子
+    setTimeout(Demo1, 100); // 每100毫秒创建一个粒子
 }
+
