@@ -1,4 +1,4 @@
-function Test() {
+function test1() {
     camera.position.x = 0
     camera.position.y = 0
     camera.position.z = 10

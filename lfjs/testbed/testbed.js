@@ -1,14 +1,3 @@
-// shouldnt be a global :(
-var particleColors = [
-  new b2ParticleColor(0xff, 0x00, 0x00, 0xff), // red
-  new b2ParticleColor(0x00, 0xff, 0x00, 0xff), // green
-  new b2ParticleColor(0x00, 0x00, 0xff, 0xff), // blue
-  new b2ParticleColor(0xff, 0x8c, 0x00, 0xff), // orange
-  new b2ParticleColor(0x00, 0xce, 0xd1, 0xff), // turquoise
-  new b2ParticleColor(0xff, 0x00, 0xff, 0xff), // magenta
-  new b2ParticleColor(0xff, 0xd7, 0x00, 0xff), // gold
-  new b2ParticleColor(0x00, 0xff, 0xff, 0xff) // cyan
-];
 var container;
 var world = null;
 var threeRenderer;
@@ -27,7 +16,6 @@ var g_groundBody = null;
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 
-//var GenerateOffsets = Module.cwrap("GenerateOffsets", 'null');
 
 function initTestbed() {
   camera = new THREE.PerspectiveCamera(70
@@ -45,8 +33,6 @@ function initTestbed() {
 
   document.body.appendChild( this.threeRenderer.domElement);
 
-  this.mouseJoint = null;
-
   // hack
   renderer = new Renderer();
   var gravity = new b2Vec2(0, 0);
@@ -54,22 +40,18 @@ function initTestbed() {
   Testbed();
 }
 
-function testSwitch(Name) {
+function testSwitch(testName) {
   ResetWorld();
   world.SetGravity(new b2Vec2(0, 0));
   var bd = new b2BodyDef;
   g_groundBody = world.CreateBody(bd);
-  test = new window[Name];
+  test = new window[testName];
 }
 
-function Testbed(obj) {
-  // Init world
-  //GenerateOffsets();
-  //Init
-
+function Testbed() {
   window.addEventListener( 'resize', onWindowResize, false );
 
-  testSwitch("Demo1");
+  testSwitch("demo");
 
   render();
 }
