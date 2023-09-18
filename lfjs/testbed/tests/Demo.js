@@ -66,34 +66,3 @@ function demo() {
     // testbed specific
     renderer.updateColorParticles = true
 }
-
-// Demo1.prototype.CreateContinuousParticle = function() {
-//     var shape = new b2CircleShape;
-//     shape.position = new b2Vec2(x, y); // 设置粒子的位置，根据需要调整
-//     shape.radius = 0.2; // 设置粒子的半径，根据需要调整
-
-//     var pd = new b2ParticleGroupDef;
-//     pd.shape = shape;
-//     pd.flags = this.particleFlags;
-//     pd.groupFlags = this.groupFlags;
-//     pd.color = particleColors[this.colorIndex];
-//     this.lastGroup.GetGroupFlags()
-    
-//     if (this.lastGroup !== null) {
-//         pd.group = this.lastGroup;
-//     }
-    
-//     this.lastGroup = this.particleSystem.CreateParticleGroup(pd);
-// }
-    
-//     // 在模拟循环中定期创建新的粒子
-// function simulateContinuousFlow() {
-//         testInstance.CreateContinuousParticle();
-    
-//         // 在这里可以添加代码来模拟粒子的流动和互动逻辑
-    
-//         requestAnimationFrame(simulateContinuousFlow);
-// }
-    
-//     // 启动连续流动的模拟
-//     simulateContinuousFlow();

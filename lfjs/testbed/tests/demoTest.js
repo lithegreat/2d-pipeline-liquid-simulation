@@ -1,4 +1,9 @@
+// let isDemoTestRunning = false; // 添加一个标志变量，用于控制是否运行 demoTest
+
 function demoTest (){
+
+    // isDemoTestRunning = true // 设置标志为true，表示 demoTest 正在运行
+    
     camera.position.x = 0
     camera.position.y = 0
     camera.position.z = 10
@@ -65,13 +70,10 @@ function demoTest (){
     // testbed specific
     renderer.updateColorParticles = true
 
-    isDemoTestRunning = true // 设置标志为true，表示 demoTest 正在运行
-    if (isDemoTestRunning) {
-        // 设置定时函数或循环，以便继续创建新的粒子
-        setTimeout(function() {
-            isDemoTestRunning = false; // 完成后将标志设为false
-            demoTest(); // 再次调用 demoTest
-        }, 1000); // 每1000毫秒创建一个粒子
-    }
+    setInterval(function() {
+        particleSystem.CreateParticleGroup(pgd1)
+        particleSystem.CreateParticleGroup(pgd2)
+    }, 1000); // 每1000毫秒创建一个粒子
+
 
 }
