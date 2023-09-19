@@ -12,6 +12,7 @@ var test = {};
 var projector = new THREE.Projector();
 var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 var g_groundBody = null;
+let intervalId = null;
 
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
@@ -83,6 +84,7 @@ var ResetWorld = function() {
     while (world.particleSystems.length > 0) {
       world.DestroyParticleSystem(world.particleSystems[0]);
     }
+    clearInterval(intervalId)
   }
   camera.position.x = 0;
   camera.position.y = 0;

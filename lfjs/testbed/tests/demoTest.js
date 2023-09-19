@@ -1,9 +1,4 @@
-// let isDemoTestRunning = false; // 添加一个标志变量，用于控制是否运行 demoTest
-
 function demoTest (){
-
-    // isDemoTestRunning = true // 设置标志为true，表示 demoTest 正在运行
-    
     camera.position.x = 0
     camera.position.y = 0
     camera.position.z = 10
@@ -43,6 +38,8 @@ function demoTest (){
     var particleSystemDef = new b2ParticleSystemDef()
     particleSystemDef.radius = 0.02
     particleSystemDef.dampingStrength = 0.5
+    particleSystemDef.surfaceTensionPressureStrength = 0.2
+    particleSystemDef.surfaceTensionNormalStrength = 0.2
     particleSystem = world.CreateParticleSystem(particleSystemDef)
 
     // particle group 1
@@ -53,8 +50,9 @@ function demoTest (){
     pgd1.shape = particleShape1
     pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd1.color.Set(255, 0, 0, 255)
-    pgd1.linearVelocity.Set(0.1, 0)
-    particleSystem.CreateParticleGroup(pgd1)
+    pgd1.linearVelocity.Set(0.5, 0)
+    var xf1 = new b2Transform;
+    xf1.SetIdentity();
 
     // particle group 2
     var pgd2 = new b2ParticleGroupDef()
@@ -64,16 +62,17 @@ function demoTest (){
     pgd2.shape = particleShape2
     pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
     pgd2.color.Set(0, 255, 0, 255)
-    pgd2.linearVelocity.Set(0.1, 0)
-    particleSystem.CreateParticleGroup(pgd2)
+    pgd2.linearVelocity.Set(0.5, 0)
+    var xf2 = new b2Transform;
+    xf2.SetIdentity();
+
+    intervalId = setInterval(function() {
+        particleSystem.DestroyParticlesInShape(particleShape1,xf1)
+        particleSystem.DestroyParticlesInShape(particleShape2,xf2)
+        particleSystem.CreateParticleGroup(pgd1)
+        particleSystem.CreateParticleGroup(pgd2)
+    }, 50); // Create new particles every 50ms
 
     // testbed specific
     renderer.updateColorParticles = true
-
-    setInterval(function() {
-        particleSystem.CreateParticleGroup(pgd1)
-        particleSystem.CreateParticleGroup(pgd2)
-    }, 1000); // 每1000毫秒创建一个粒子
-
-
 }
