@@ -14,8 +14,10 @@ var planeZ = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
 var g_groundBody = null;
 let intervalId = null;
 
+
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
+
 
 
 function initTestbed() {

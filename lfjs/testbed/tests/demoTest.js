@@ -71,6 +71,22 @@ function demoTest (){
         particleSystem.DestroyParticlesInShape(particleShape2,xf2)
         particleSystem.CreateParticleGroup(pgd1)
         particleSystem.CreateParticleGroup(pgd2)
+
+        // 获取所有粒子的位置
+        var positions = particleSystem.GetPositionBuffer()
+
+        console.log(positions.length)
+        
+        // 遍历粒子位置，检查每个粒子的 x 坐标
+        for (var i = 0; i < positions.length; i += 2) {
+            var x = positions[i];
+            // 检查粒子是否到达右边
+            if (x > 4) {
+                // 符合条件的粒子将被销毁
+                particleSystem.DestroyParticle(i / 2); // 使用 i / 2 获取粒子索引
+            }
+        }
+
     }, 50); // Create new particles every 50ms
 
     // testbed specific
