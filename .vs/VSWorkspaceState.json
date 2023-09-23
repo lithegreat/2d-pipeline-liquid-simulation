@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\liquidfun-1.1.0",
-    "\\liquidfun-1.1.0\\liquidfun",
-    "\\liquidfun-1.1.0\\liquidfun\\Box2D",
-    "\\liquidfun-1.1.0\\liquidfun\\Box2D\\lfjs"
+    "\\Box2D"
   ],
+  "SelectedNode": "\\Box2D",
   "PreviewInSolutionExplorer": false
 }
