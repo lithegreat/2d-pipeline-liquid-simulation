@@ -1,8 +1,4 @@
 var inv255 = .003921569;
-var b2PolygonShape
-var b2EdgeShape
-var b2CircleShape
-var b2ChainShape
 
 function Renderer() {
   // init large buffer geometry
