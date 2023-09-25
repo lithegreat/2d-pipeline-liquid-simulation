@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 <style>
     body {
@@ -8,8 +8,75 @@
         overflow: hidden;
     }
 </style>
-  <script src="liquidfun_v1.1.0.min.js"></script>
-  <!-- <script src="../node_modules/liquidfun-emscripten/liquidfun.js"></script> -->
+  <!-- import LiquidFun -->
+  <script src="inherit.js"></script>
+  <script src="Box2d/Common/b2Settings.js"></script>
+  <script src="Box2d/Common/b2Math.js"></script>
+  <script src="Box2d/Common/b2BlockAllocator.js"></script>
+  <script src="Box2d/Common/b2StackAllocator.js"></script>
+  <script src="Box2d/Common/b2Draw.js"></script>
+  <script src="Box2d/Common/b2GrowableStack.js"></script>
+  <script src="Box2d/Common/b2Timer.js"></script>
+
+  <script src="Box2d/Collision/b2Distance.js"></script>
+  <script src="Box2d/Collision/b2Collision.js"></script>
+  <script src="Box2d/Collision/b2DynamicTree.js"></script>
+  <script src="Box2d/Collision/b2BroadPhase.js"></script>
+  <script src="Box2d/Collision/b2CollideCircle.js"></script>
+  <script src="Box2d/Collision/b2CollideEdge.js"></script>
+  <script src="Box2d/Collision/b2CollidePolygon.js"></script>
+  <script src="Box2d/Collision/b2TimeOfImpact.js"></script>
+
+  <script src="Box2d/Collision/Shapes/b2Shape.js"></script>
+  <script src="Box2d/Collision/Shapes/b2PolygonShape.js"></script>
+  <script src="Box2d/Collision/Shapes/b2EdgeShape.js"></script>
+  <script src="Box2d/Collision/Shapes/b2CircleShape.js"></script>
+  <script src="Box2d/Collision/Shapes/b2ChainShape.js"></script>
+
+
+  <script src ="Box2d/Dynamics/b2WorldCallbacks.js"></script>
+  <script src ="Box2d/Dynamics/b2TimeStep.js"></script>
+  <script src="Box2d/Particle/b2Particle.js"></script>
+  <script src="Box2d/Particle/b2ParticleGroup.js"></script>
+  <script src="Box2d/Particle/b2ParticleSystem.js"></script>
+  <script src="Box2d/Particle/b2StackQueue.js"></script>
+  <script src="Box2d/Particle/b2VoronoiDiagram.js"></script>
+
+  <script src="Box2d/Dynamics/b2Fixture.js"></script>
+  <script src="Box2d/Dynamics/b2Body.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2Contact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2ContactFactory.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2CircleContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2ChainAndCircleContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2ChainAndPolygonContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2EdgeAndCircleContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2EdgeAndPolygonContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2PolygonAndCircleContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2PolygonContact.js"></script>
+  <script src="Box2d/Dynamics/Contacts/b2ContactSolver.js"></script>
+
+  <script src="Box2d/Dynamics/Joints/b2Joint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2AreaJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2DistanceJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2FrictionJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2RevoluteJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2PrismaticJoint.js"></script>
+
+  <script src="Box2d/Dynamics/Joints/b2MotorJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2GearJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2JointFactory.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2MouseJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2PulleyJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2RopeJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2WeldJoint.js"></script>
+  <script src="Box2d/Dynamics/Joints/b2WheelJoint.js"></script>
+
+  <script src ="Box2d/Dynamics/b2ContactManager.js"></script>
+  <script src ="Box2d/Dynamics/b2Island.js"></script>
+  <script src ="Box2d/Dynamics/b2World.js"></script>
+
+  <script src="Box2d/Rope/b2Rope.js"></script>
+  <!-- <script src="box2d.ext.js"></script> -->
 
   <!-- testbed code !-->
   <script src="testbed/renderer.js"></script>
@@ -20,17 +87,20 @@
   <!-- tests !-->
   
   <script src="testbed/tests/test1.js"></script>
-  <script src="testbed/tests/demo.js"></script>
+  <script src="testbed/tests/Demo.js"></script>
   <script src="testbed/tests/demoTest.js"></script>
 
   <body onload="initTestbed()"></body>
 
   <div style="position:absolute;float:right;z-index:1;border:1px solid #ccc;font:16px/26px Georgia, Garamond, Serif;overflow:auto;background:white">
 
-      <select id="tests" onchange="testSwitch(this.value)">
+    <label for="tests">
+        <b>Tests:</b>
+    </label>
+    <select id="tests" onchange="testSwitch(this.value)">
         <option value="demo" selected="selected">demo</option>
         <option value="demoTest">demoTest</option>
         <option value="test1">test1</option>
-      </select>
+    </select>
 
   </div>

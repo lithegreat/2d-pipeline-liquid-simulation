@@ -4,32 +4,33 @@ function demo (){
     camera.position.z = 10
 
     // Create border
-    let borderDef = new b2BodyDef
+    let borderDef = new box2d.b2BodyDef
     let border = world.CreateBody(borderDef)
-    let borderShape = new b2ChainShape()
+    let borderShape = new box2d.b2ChainShape()
     borderShape.vertices = [
-        new b2Vec2(-5, -2),
-        new b2Vec2(5, -2),
-        new b2Vec2(5, 2),
-        new b2Vec2(-5, 2),
+        new box2d.b2Vec2(-5, -2),
+        new box2d.b2Vec2(5, -2),
+        new box2d.b2Vec2(5, 2),
+        new box2d.b2Vec2(-5, 2),
     ]
     borderShape.CreateLoop()
     border.CreateFixtureFromShape(borderShape, 0.0)
 
     // Create pipe
-    let pipeDef = new b2BodyDef
+    let pipeDef = new box2d.b2BodyDef
     let pipe = world.CreateBody(pipeDef)
-    let pipeShape = new b2ChainShape()
+    let pipeShape = new box2d.b2ChainShape()
+    let vertices = []
     pipeShape.vertices = [
-        new b2Vec2(0, 0),
-        new b2Vec2(-5, -1.75),
-        new b2Vec2(-5, -2),
-        new b2Vec2(0, -0.25),
-        new b2Vec2(5, -0.25),
-        new b2Vec2(5, 0.25),
-        new b2Vec2(0, 0.25),
-        new b2Vec2(-5, 2),
-        new b2Vec2(-5, 1.75),
+        new box2d.b2Vec2(0, 0),
+        new box2d.b2Vec2(-5, -1.75),
+        new box2d.b2Vec2(-5, -2),
+        new box2d.b2Vec2(0, -0.25),
+        new box2d.b2Vec2(5, -0.25),
+        new box2d.b2Vec2(5, 0.25),
+        new box2d.b2Vec2(0, 0.25),
+        new box2d.b2Vec2(-5, 2),
+        new box2d.b2Vec2(-5, 1.75),
     ]
     pipeShape.CreateLoop()
     pipe.CreateFixtureFromShape(pipeShape, 0.0)
