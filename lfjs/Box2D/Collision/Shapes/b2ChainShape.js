@@ -95,6 +95,7 @@ box2d.b2ChainShape.prototype.Clear = function() {
  * @param {number=} count the vertex count
  */
 box2d.b2ChainShape.prototype.CreateLoop = function(vertices, count) {
+  var vertices = vertices || [];
   count = count || vertices.length;
   if (box2d.ENABLE_ASSERTS) {
     box2d.b2Assert(this.m_vertices === null && this.m_count === 0);

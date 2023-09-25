@@ -14,7 +14,7 @@ function demo (){
         new box2d.b2Vec2(-5, 2),
     ]
     borderShape.CreateLoop()
-    border.CreateFixtureFromShape(borderShape, 0.0)
+    border.CreateFixture(borderShape, 0.0)
 
     // Create pipe
     let pipeDef = new box2d.b2BodyDef
@@ -33,10 +33,10 @@ function demo (){
         new box2d.b2Vec2(-5, 1.75),
     ]
     pipeShape.CreateLoop()
-    pipe.CreateFixtureFromShape(pipeShape, 0.0)
+    pipe.CreateFixture(pipeShape, 0.0)
 
     // Create particle system
-    let particleSystemDef = new b2ParticleSystemDef()
+    let particleSystemDef = new box2d.b2ParticleSystemDef()
     particleSystemDef.radius = 0.025
     particleSystemDef.dampingStrength = 0.5
     particleSystemDef.surfaceTensionPressureStrength = 0.2
@@ -44,8 +44,8 @@ function demo (){
     particleSystem = world.CreateParticleSystem(particleSystemDef)
 
     // particle group 1
-    let pgd1 = new b2ParticleGroupDef()
-    let particleShape1 = new b2CircleShape()
+    let pgd1 = new box2d.b2ParticleGroupDef()
+    let particleShape1 = new box2d.b2CircleShape()
     particleShape1.radius = 0.117
     particleShape1.position.Set(-4.64, -1.75)
     pgd1.shape = particleShape1
@@ -56,8 +56,8 @@ function demo (){
     xf1.SetIdentity();
 
     // particle group 2
-    let pgd2 = new b2ParticleGroupDef()
-    let particleShape2 = new b2CircleShape()
+    let pgd2 = new box2d.b2ParticleGroupDef()
+    let particleShape2 = new box2d.b2CircleShape()
     particleShape2.radius = 0.117
     particleShape2.position.Set(-4.64, 1.75)
     pgd2.shape = particleShape2

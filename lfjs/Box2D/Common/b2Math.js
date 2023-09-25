@@ -411,6 +411,7 @@ box2d.b2Vec2.prototype.Set = function(x, y) {
  */
 box2d.b2Vec2.prototype.Copy = function(other) {
   //if (box2d.ENABLE_ASSERTS) { box2d.b2Assert(this !== other); }
+  var other = other || box2d.b2Vec2.ZERO;
   this.x = other.x;
   this.y = other.y;
   return this;
