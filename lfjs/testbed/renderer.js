@@ -1,8 +1,4 @@
 var inv255 = .003921569;
-var b2PolygonShape
-var b2EdgeShape
-var b2CircleShape
-var b2ChainShape
 
 function Renderer() {
   // init large buffer geometry
@@ -140,23 +136,23 @@ Renderer.prototype.transformVerticesAndInsert = function(vertices, transform, r,
   }
 };
 
-box2d.b2CircleShape.prototype.draw = function(transform) {
+b2CircleShape.prototype.draw = function(transform) {
   var circlePosition = this.position,
     center = new b2Vec2(circlePosition.x, circlePosition.y);
  // b2Vec2.Mul(center, transform, center);
   renderer.insertCircleVertices(transform, this.radius, center.x, center.y, 0, 0, 0, 5);
 };
 
-box2d.b2ChainShape.prototype.draw = function(transform) {
+b2ChainShape.prototype.draw = function(transform) {
   renderer.transformVerticesAndInsert(this.vertices, transform, 0, 0, 0);
 };
 
 
-box2d.b2EdgeShape.prototype.draw = function(transform) {
+b2EdgeShape.prototype.draw = function(transform) {
   renderer.transformAndInsert(this.vertex1, this.vertex2, transform, 0, 0, 0);
 };
 
-box2d.b2PolygonShape.prototype.draw = function(transform) {
+b2PolygonShape.prototype.draw = function(transform) {
   var zPosition = renderer.currentVertex * 3;
 
   renderer.transformVerticesAndInsert(this.vertices, transform, 0, 0, 0);
