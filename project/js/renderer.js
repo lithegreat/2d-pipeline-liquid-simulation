@@ -79,11 +79,11 @@ Renderer.prototype.insertCircleVertices = function(transform, radius, x, y, r, g
   var vertices = this.circleVertices;
   for (var i = 0; i < this.circleResolution; i++) {
     var i4 = i * 4;
-    var v1 = new b2Vec2(vertices[i4] * radius + x, vertices[i4 + 1] * radius + y);
-    var v2 = new b2Vec2(vertices[i4 + 2] * radius + x, vertices[i4 + 3] * radius + y);
+    var v1 = new b2.Vec2(vertices[i4] * radius + x, vertices[i4 + 1] * radius + y);
+    var v2 = new b2.Vec2(vertices[i4 + 2] * radius + x, vertices[i4 + 3] * radius + y);
 
-    b2Vec2.Mul(v1, transform, v1);
-    b2Vec2.Mul(v2, transform, v2);
+    b2.Vec2.Mul(v1, transform, v1);
+    b2.Vec2.Mul(v2, transform, v2);
 
     this.insertLine(v1.x, v1.y, v2.x, v2.y, r, g, b);
   }
@@ -117,11 +117,11 @@ Renderer.prototype.initCircleVertices = function(v, resolution) {
 
 
 Renderer.prototype.transformAndInsert = function(v1, v2, transform, r, g, b) {
-  var transformedV1 = new b2Vec2(),
-    transformedV2 = new b2Vec2();
+  var transformedV1 = new b2.Vec2(),
+    transformedV2 = new b2.Vec2();
 
-  b2Vec2.Mul(transformedV1, transform, v1);
-  b2Vec2.Mul(transformedV2, transform, v2);
+  b2.Vec2.Mul(transformedV1, transform, v1);
+  b2.Vec2.Mul(transformedV2, transform, v2);
   renderer.insertLine(transformedV1.x, transformedV1.y,
     transformedV2.x, transformedV2.y,
     r, g, b);
@@ -136,23 +136,23 @@ Renderer.prototype.transformVerticesAndInsert = function(vertices, transform, r,
   }
 };
 
-b2CircleShape.prototype.draw = function(transform) {
+b2.CircleShape.prototype.draw = function(transform) {
   var circlePosition = this.position,
-    center = new b2Vec2(circlePosition.x, circlePosition.y);
- // b2Vec2.Mul(center, transform, center);
+    center = new b2.Vec2(circlePosition.x, circlePosition.y);
+ // b2.Vec2.Mul(center, transform, center);
   renderer.insertCircleVertices(transform, this.radius, center.x, center.y, 0, 0, 0, 5);
 };
 
-b2ChainShape.prototype.draw = function(transform) {
+b2.ChainShape.prototype.draw = function(transform) {
   renderer.transformVerticesAndInsert(this.vertices, transform, 0, 0, 0);
 };
 
 
-b2EdgeShape.prototype.draw = function(transform) {
+b2.EdgeShape.prototype.draw = function(transform) {
   renderer.transformAndInsert(this.vertex1, this.vertex2, transform, 0, 0, 0);
 };
 
-b2PolygonShape.prototype.draw = function(transform) {
+b2.PolygonShape.prototype.draw = function(transform) {
   var zPosition = renderer.currentVertex * 3;
 
   renderer.transformVerticesAndInsert(this.vertices, transform, 0, 0, 0);
@@ -169,7 +169,7 @@ function drawParticleSystem(system) {
   var particles = system.GetPositionBuffer();
   var color = system.GetColorBuffer();
   var maxParticles = particles.length,
-    transform = new b2Transform();
+    transform = new b2.Transform();
   transform.SetIdentity();
 
   for (var i = 0, c = 0; i < maxParticles; i += 2, c += 4) {

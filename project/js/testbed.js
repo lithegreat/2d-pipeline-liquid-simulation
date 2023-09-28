@@ -38,15 +38,15 @@ function initTestbed() {
 
   // hack
   renderer = new Renderer();
-  var gravity = new box2d.b2Vec2(0, 0);
-  world = new box2d.b2World(gravity);
+  var gravity = new b2.Vec2(0, 0);
+  world = new b2.World(gravity);
   Testbed();
 }
 
 function testSwitch(testName) {
   ResetWorld();
-  world.SetGravity(new box2d.b2Vec2(0, 0));
-  var bd = new box2d.b2BodyDef;
+  world.SetGravity(new b2.Vec2(0, 0));
+  var bd = new b2.BodyDef;
   g_groundBody = world.CreateBody(bd);
   test = new window[testName];
 }

@@ -4,39 +4,38 @@ function demo (){
     camera.position.z = 10
 
     // Create border
-    let borderDef = new box2d.b2BodyDef
+    let borderDef = new b2.BodyDef
     let border = world.CreateBody(borderDef)
-    let borderShape = new box2d.b2ChainShape()
+    let borderShape = new b2.ChainShape()
     borderShape.vertices = [
-        new box2d.b2Vec2(-5, -2),
-        new box2d.b2Vec2(5, -2),
-        new box2d.b2Vec2(5, 2),
-        new box2d.b2Vec2(-5, 2),
+        new b2.Vec2(-5, -2),
+        new b2.Vec2(5, -2),
+        new b2.Vec2(5, 2),
+        new b2.Vec2(-5, 2),
     ]
-    borderShape.CreateLoop()
+    borderShape.CreateLoop(borderShape.vertices)
     border.CreateFixture(borderShape, 0.0)
 
     // Create pipe
-    let pipeDef = new box2d.b2BodyDef
+    let pipeDef = new b2.BodyDef
     let pipe = world.CreateBody(pipeDef)
-    let pipeShape = new box2d.b2ChainShape()
-    let vertices = []
+    let pipeShape = new b2.ChainShape()
     pipeShape.vertices = [
-        new box2d.b2Vec2(0, 0),
-        new box2d.b2Vec2(-5, -1.75),
-        new box2d.b2Vec2(-5, -2),
-        new box2d.b2Vec2(0, -0.25),
-        new box2d.b2Vec2(5, -0.25),
-        new box2d.b2Vec2(5, 0.25),
-        new box2d.b2Vec2(0, 0.25),
-        new box2d.b2Vec2(-5, 2),
-        new box2d.b2Vec2(-5, 1.75),
+        new b2.Vec2(0, 0),
+        new b2.Vec2(-5, -1.75),
+        new b2.Vec2(-5, -2),
+        new b2.Vec2(0, -0.25),
+        new b2.Vec2(5, -0.25),
+        new b2.Vec2(5, 0.25),
+        new b2.Vec2(0, 0.25),
+        new b2.Vec2(-5, 2),
+        new b2.Vec2(-5, 1.75),
     ]
-    pipeShape.CreateLoop()
+    pipeShape.CreateLoop(pipeShape.vertices)
     pipe.CreateFixture(pipeShape, 0.0)
 
     // Create particle system
-    let particleSystemDef = new box2d.b2ParticleSystemDef()
+    let particleSystemDef = new b2.ParticleSystemDef()
     particleSystemDef.radius = 0.025
     particleSystemDef.dampingStrength = 0.5
     particleSystemDef.surfaceTensionPressureStrength = 0.2
@@ -44,27 +43,27 @@ function demo (){
     particleSystem = world.CreateParticleSystem(particleSystemDef)
 
     // particle group 1
-    let pgd1 = new box2d.b2ParticleGroupDef()
-    let particleShape1 = new box2d.b2CircleShape()
+    let pgd1 = new b2.ParticleGroupDef()
+    let particleShape1 = new b2.CircleShape()
     particleShape1.radius = 0.117
-    particleShape1.position.Set(-4.64, -1.75)
+    particleShape1.m_p.Set(-4.64, -1.75)
     pgd1.shape = particleShape1
-    pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
+    pgd1.flags = b2._tensileParticle | b2._colorMixingParticle
     pgd1.color.Set(255, 0, 0, 255)
     pgd1.linearVelocity.Set(0.5, 0)
-    let xf1 = new b2Transform;
+    let xf1 = new b2.Transform;
     xf1.SetIdentity();
 
     // particle group 2
-    let pgd2 = new box2d.b2ParticleGroupDef()
-    let particleShape2 = new box2d.b2CircleShape()
+    let pgd2 = new b2.ParticleGroupDef()
+    let particleShape2 = new b2.CircleShape()
     particleShape2.radius = 0.117
-    particleShape2.position.Set(-4.64, 1.75)
+    particleShape2.m_p.Set(-4.64, 1.75)
     pgd2.shape = particleShape2
-    pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
+    pgd2.flags = b2._tensileParticle | b2._colorMixingParticle
     pgd2.color.Set(0, 255, 0, 255)
     pgd2.linearVelocity.Set(0.5, 0)
-    let xf2 = new b2Transform;
+    let xf2 = new b2.Transform;
     xf2.SetIdentity();
 
     intervalId = setInterval(function() {
