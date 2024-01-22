@@ -1,13 +1,4 @@
 /**
- * Forked from Box2D.js
- * @see https://github.com/kripken/box2d.js/blob/f75077b/helpers/embox2d-helpers.js
- * @author dmagunov + Huy Nguyen + fork contributions from Alex Birch
- * @see https://github.com/kripken/box2d.js/blob/49dddd6/helpers/embox2d-html5canvas-debugDraw.js
- * @author dmagunov + fork contributions from Alex Birch
- * @license Zlib https://opensource.org/licenses/Zlib
- * License evidence: https://github.com/kripken/box2d.js/blob/master/README.markdown#box2djs
- *   "box2d.js is zlib licensed, just like Box2D."
- * 
  * @typedef {import('box2d-wasm')} Box2DFactory
  * @param {CanvasRenderingContext2D} ctx
  * @param {number} pixelsPerMeter
@@ -16,14 +7,18 @@
 export const makeDebugDraw = (ctx, pixelsPerMeter, box2D) => {
   const {
     b2Color,
-    b2Draw: { e_shapeBit },
+    b2ParticleColor,
+    b2Draw: { 
+      e_shapeBit,
+      e_particleBit
+    },
     b2Transform,
     b2Vec2,
     JSDraw,
     wrapPointer
   } = box2D;
 
-  /**
+  /** 
    * to replace original C++ operator =
    * @param {Box2D.b2Vec2} vec
    * @returns {Box2D.b2Vec2}
@@ -110,6 +105,22 @@ export const makeDebugDraw = (ctx, pixelsPerMeter, box2D) => {
   };
 
   /**
+   * @param {Box2D.b2Vec2} center
+   * @param {number} radius
+   * @param {boolean} fill
+   * @returns {void}
+  */ 
+  const drawParticles = (center, radius, fill) => {
+    ctx.beginPath();
+    ctx.arc(center.get_x(), center.get_y(), radius, 0, 2 * Math.PI, false);
+
+    if (fill) {
+      ctx.fill();
+    }
+    ctx.stroke();
+  };
+
+  /**
    * @param {Box2D.b2Vec2} vert1
    * @param {Box2D.b2Vec2} vert2
    * @returns {void}
@@ -155,6 +166,7 @@ export const makeDebugDraw = (ctx, pixelsPerMeter, box2D) => {
 
   /** {@link Box2D.b2Vec2} is a struct of `float x, y` */
   const sizeOfB2Vec = Float32Array.BYTES_PER_ELEMENT * 2;
+  // console.log('sizeOfB2Vec:', sizeOfB2Vec);
 
   /**
    * @param {number} array_p pointer to {@link Box2D.b2Vec2}
@@ -236,6 +248,26 @@ export const makeDebugDraw = (ctx, pixelsPerMeter, box2D) => {
       drawCircle(center, radius, axis, true);
     },
     /**
+     * @param {number} centers_p pointer to Array<{@link Box2D.b2Vec2}>
+     * @param {number} radius
+     * @param {number} colors_p pointer to Array<{@link Box2D.b2ParticleColor}>
+     * @param {number} count
+     * @returns {void}
+     */
+    DrawParticles(centers_p, radius, colors_p, count) {
+      // console.log(centers_p, colors_p);
+      const centers = reifyArray(centers_p, count, sizeOfB2Vec, b2Vec2);
+      // console.log(centers);
+      const colors = reifyArray(colors_p, count, 4, b2ParticleColor);
+      // console.log(colors);
+      for (let i = 0; i < count; ++i) {
+        const center = centers[i];
+        const color = colors[i];
+        setCtxColor(getRgbStr(color));
+        drawParticles(center, radius, true);
+      }
+    },
+    /**
      * @param {number} transform_p pointer to {@link Box2D.b2Transform}
      * @returns {void}
      */
@@ -256,6 +288,6 @@ export const makeDebugDraw = (ctx, pixelsPerMeter, box2D) => {
       drawPoint(vertex, sizeMetres);
     }
   });
-  debugDraw.SetFlags(e_shapeBit);
+  debugDraw.SetFlags(e_shapeBit | e_particleBit);
   return debugDraw;
 };

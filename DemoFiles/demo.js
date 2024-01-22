@@ -1,22 +1,6 @@
-/**
- * Forked from Box2D.js
- * @see https://github.com/kripken/box2d.js/blob/f75077b/helpers/embox2d-helpers.js
- * @author dmagunov + Huy Nguyen + fork contributions from Alex Birch
- * @see https://github.com/kripken/box2d.js/blob/49dddd6/helpers/embox2d-html5canvas-debugDraw.js
- * @author dmagunov + fork contributions from Alex Birch
- * @see https://github.com/kripken/box2d.js/blob/925a279/demo/webgl/box2d.wasm.html
- * @author Alon Zakai + Huy Nguyen + fork contributions from Alex Birch
- * @license Zlib https://opensource.org/licenses/Zlib
- * License evidence: https://github.com/kripken/box2d.js/blob/master/README.markdown#box2djs
- *   "box2d.js is zlib licensed, just like Box2D."
- */
 import Box2DFactory from './Box2D/entry.js';
 import { makeDebugDraw } from './debugDraw.js';
 
-/**
- * Aliasing this variable solely for the purpose of documenting its type.
- * @type {import('box2d-wasm')}
- */
 const Box2DFactory_ = Box2DFactory;
 Box2DFactory_().then(box2D => {
   const {
@@ -27,6 +11,9 @@ Box2DFactory_().then(box2D => {
     b2Vec2,
     b2PolygonShape,
     b2World,
+    b2ParticleGroupDef,
+    b2ParticleSystemDef,
+
   } = box2D;
 
   /** @type {HTMLCanvasElement} */
@@ -57,6 +44,21 @@ Box2DFactory_().then(box2D => {
     shape.SetTwoSided(new b2Vec2(3, 18), new b2Vec2(22, 18));
     ground.CreateFixture(shape, 0);
   }
+
+  const particleSystemDef = new b2ParticleSystemDef();
+  particleSystemDef.radius = 0.035
+  const particleSystem = world.CreateParticleSystem(particleSystemDef);
+  const pgd1 = new b2ParticleGroupDef()
+  const emitterShape1 = new b2CircleShape()
+  emitterShape1.set_m_radius(0.5)
+  console.log(emitterShape1)
+  emitterShape1.m_p.Set(10, 10)
+  pgd1.shape = emitterShape1
+  // pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
+  pgd1.color.Set(0, 0, 255, 255)
+  // pgd1.linearVelocity.Set(0, 0)
+  particleSystem.CreateParticleGroup(pgd1)
+  console.log(pgd1)
 
   const sideLengthMetres = 1;
   const square = new b2PolygonShape();
@@ -102,7 +104,7 @@ Box2DFactory_().then(box2D => {
   };
 
   const drawCanvas = () => {
-    ctx.fillStyle = 'rgb(0,0,0)';
+    ctx.fillStyle = 'rgb(255,255,255)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
