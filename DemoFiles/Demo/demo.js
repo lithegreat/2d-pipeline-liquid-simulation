@@ -1,79 +1,131 @@
-function demo (){
-    camera.position.x = 0
-    camera.position.y = 0
-    camera.position.z = 10
+import Box2DFactory from '../Box2D/entry.js';
+import { makeDebugDraw } from '../debugDraw.js';
 
-    // Create border
-    let borderDef = new box2d.b2BodyDef
-    let border = world.CreateBody(borderDef)
-    let borderShape = new box2d.b2ChainShape()
-    borderShape.vertices = [
-        new box2d.b2Vec2(-5, -2),
-        new box2d.b2Vec2(5, -2),
-        new box2d.b2Vec2(5, 2),
-        new box2d.b2Vec2(-5, 2),
-    ]
-    borderShape.CreateLoop()
-    border.CreateFixture(borderShape, 0.0)
+const Box2DFactory_ = Box2DFactory;
+Box2DFactory_().then(box2D => {
+  const {
+    b2_dynamicBody,
+    b2BodyDef,
+    b2CircleShape,
+    b2EdgeShape,
+    b2Vec2,
+    b2PolygonShape,
+    b2World,
+    b2ParticleGroupDef,
+    b2ParticleSystemDef,
 
-    // Create pipe
-    let pipeDef = new box2d.b2BodyDef
-    let pipe = world.CreateBody(pipeDef)
-    let pipeShape = new box2d.b2ChainShape()
-    let vertices = []
-    pipeShape.vertices = [
-        new box2d.b2Vec2(0, 0),
-        new box2d.b2Vec2(-5, -1.75),
-        new box2d.b2Vec2(-5, -2),
-        new box2d.b2Vec2(0, -0.25),
-        new box2d.b2Vec2(5, -0.25),
-        new box2d.b2Vec2(5, 0.25),
-        new box2d.b2Vec2(0, 0.25),
-        new box2d.b2Vec2(-5, 2),
-        new box2d.b2Vec2(-5, 1.75),
-    ]
-    pipeShape.CreateLoop()
-    pipe.CreateFixture(pipeShape, 0.0)
+  } = box2D;
 
-    // Create particle system
-    let particleSystemDef = new box2d.b2ParticleSystemDef()
-    particleSystemDef.radius = 0.025
-    particleSystemDef.dampingStrength = 0.5
-    particleSystemDef.surfaceTensionPressureStrength = 0.2
-    particleSystemDef.surfaceTensionNormalStrength = 0.2
-    particleSystem = world.CreateParticleSystem(particleSystemDef)
+  /** @type {HTMLCanvasElement} */
+  const canvas = document.getElementById("demo-canvas");
+  const ctx = canvas.getContext('2d');
 
-    // particle group 1
-    let pgd1 = new box2d.b2ParticleGroupDef()
-    let particleShape1 = new box2d.b2CircleShape()
-    particleShape1.radius = 0.117
-    particleShape1.position.Set(-4.64, -1.75)
-    pgd1.shape = particleShape1
-    pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
-    pgd1.color.Set(255, 0, 0, 255)
-    pgd1.linearVelocity.Set(0.5, 0)
-    let xf1 = new b2Transform;
-    xf1.SetIdentity();
+  const pixelsPerMeter = 32;
+  const cameraOffsetMetres = {
+    x: 0,
+    y: 0
+  };
 
-    // particle group 2
-    let pgd2 = new box2d.b2ParticleGroupDef()
-    let particleShape2 = new box2d.b2CircleShape()
-    particleShape2.radius = 0.117
-    particleShape2.position.Set(-4.64, 1.75)
-    pgd2.shape = particleShape2
-    pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
-    pgd2.color.Set(0, 255, 0, 255)
-    pgd2.linearVelocity.Set(0.5, 0)
-    let xf2 = new b2Transform;
-    xf2.SetIdentity();
+  const gravity = new b2Vec2(0, 10);
+  const world = new b2World(gravity);
 
-    intervalId = setInterval(function() {
-        particleSystem.DestroyParticlesInShape(particleShape1,xf1)
-        particleSystem.DestroyParticlesInShape(particleShape2,xf2)
-        particleSystem.CreateParticleGroup(pgd1)
-        particleSystem.CreateParticleGroup(pgd2)
-    }, 50); // Create new particles every 50ms
+  const bd_ground = new b2BodyDef();
+  const ground = world.CreateBody(bd_ground);
 
-    // testbed specific
-    renderer.updateColorParticles = true
-}
+  // ramp which boxes fall onto initially
+  {
+    const shape = new b2EdgeShape();
+    shape.SetTwoSided(new b2Vec2(3, 4), new b2Vec2(6, 7));
+    ground.CreateFixture(shape, 0);
+  }
+  // floor which boxes rest on
+  {
+    const shape = new b2EdgeShape();
+    shape.SetTwoSided(new b2Vec2(3, 18), new b2Vec2(22, 18));
+    ground.CreateFixture(shape, 0);
+  }
+
+  const particleSystemDef = new b2ParticleSystemDef();
+  particleSystemDef.radius = 0.035
+  const particleSystem = world.CreateParticleSystem(particleSystemDef);
+  const pgd1 = new b2ParticleGroupDef()
+  const emitterShape1 = new b2CircleShape()
+  emitterShape1.set_m_radius(0.5)
+  // console.log(emitterShape1)
+  emitterShape1.m_p.Set(10, 10)
+  pgd1.shape = emitterShape1
+  // pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
+  pgd1.color.Set(0, 0, 255, 255)
+  // pgd1.linearVelocity.Set(0, 0)
+  particleSystem.CreateParticleGroup(pgd1)
+  console.log(pgd1)
+
+  const sideLengthMetres = 1;
+  const square = new b2PolygonShape();
+  square.SetAsBox(sideLengthMetres/2, sideLengthMetres/2);
+  const circle = new b2CircleShape();
+  circle.set_m_radius(sideLengthMetres/2);
+
+  const ZERO = new b2Vec2(0, 0);
+  const temp = new b2Vec2(0, 0);
+  /**
+   * @param {Box2D.b2Body} body
+   * @param {number} index
+   * @returns {void}
+   */
+  const initPosition = (body, index) => {
+    temp.Set(4 + sideLengthMetres*(Math.random()-0.5), -sideLengthMetres*index);
+    body.SetTransform(temp, 0);
+    body.SetLinearVelocity(ZERO);
+    body.SetAwake(1);
+    body.SetEnabled(1);
+  }
+
+  // make falling boxes
+  const boxCount = 10;
+  for (let i = 0; i < boxCount; i++) {
+    const bd = new b2BodyDef();
+    bd.set_type(b2_dynamicBody);
+    bd.set_position(ZERO);
+    const body = world.CreateBody(bd);
+    body.CreateFixture(i % 2 ? square : circle, 1);
+    initPosition(body, i);
+  }
+
+  const debugDraw = makeDebugDraw(ctx, pixelsPerMeter, box2D);
+  world.SetDebugDraw(debugDraw);
+
+  // calculate no more than a 60th of a second during one world.Step() call
+  const maxTimeStepMs = 1/60*1000;
+  /** @param {number} deltaMs */
+  const step = (deltaMs) => {
+    const clampedDeltaMs = Math.min(deltaMs, maxTimeStepMs);
+    world.Step(clampedDeltaMs/1000, 3, 2);
+  };
+
+  const drawCanvas = () => {
+    ctx.fillStyle = 'rgb(255,255,255)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.save();
+    ctx.scale(pixelsPerMeter, pixelsPerMeter);
+    const { x, y } = cameraOffsetMetres;
+    ctx.translate(x, y);
+    ctx.lineWidth /= pixelsPerMeter;
+    
+    ctx.fillStyle = 'rgb(255,255,0)';
+    world.DebugDraw();
+
+    ctx.restore();
+  };
+
+  /** @type {?number} */
+  let handle;
+  (function loop(prevMs) {
+    const nowMs = window.performance.now();
+    handle = requestAnimationFrame(loop.bind(null, nowMs));
+    const deltaMs = nowMs-prevMs;
+    step(deltaMs);
+    drawCanvas();
+  }(window.performance.now()));
+});
