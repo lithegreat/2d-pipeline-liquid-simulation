@@ -1,107 +1,93 @@
-import Box2DFactory from '../Box2D/entry.js'
-import { makeDebugDraw } from '../debugDraw.js'
+function demoTest() {
+	camera.position.x = 0
+	camera.position.y = 0
+	camera.position.z = 10
 
-const Box2DFactory_ = Box2DFactory;
-Box2DFactory_().then(box2D => {
-	const {
-		b2ParticleGroupDef,
-		b2ParticleSystemDef,
-		b2PolygonShape,
-		b2World,
-		b2Vec2
-	} = box2D;
+	// Create border
+	var borderDef = new b2BodyDef()
+	var border = world.CreateBody(borderDef)
+	var borderShape = new b2ChainShape()
+	borderShape.vertices = [
+		new b2Vec2(-5, -2),
+		new b2Vec2(5, -2),
+		new b2Vec2(5, 2),
+		new b2Vec2(-5, 2)
+	]
+	borderShape.CreateLoop()
+	border.CreateFixtureFromShape(borderShape, 0.0)
 
-	// init the canvas and box2d world
-	const canvas = document.getElementById("demo-canvas");
-	const ctx = canvas.getContext('2d');
-	const pixelsPerMeter = 32;
-	const cameraOffsetMetres = {
-		x: 0,
-		y: 0
-	};
-	const gravity = new b2Vec2(0, 0); // zero gravity
-	const world = new b2World(gravity);
+	// Create pipe
+	var pipeDef = new b2BodyDef()
+	var pipe = world.CreateBody(pipeDef)
+	var pipeShape = new b2ChainShape()
+	pipeShape.vertices = [
+		new b2Vec2(0, 0),
+		new b2Vec2(-5, -1.75),
+		new b2Vec2(-5, -2),
+		new b2Vec2(0, -0.25),
+		new b2Vec2(5, -0.25),
+		new b2Vec2(5, 0.25),
+		new b2Vec2(0, 0.25),
+		new b2Vec2(-5, 2),
+		new b2Vec2(-5, 1.75)
+	]
+	pipeShape.CreateLoop()
+	pipe.CreateFixtureFromShape(pipeShape, 0.0)
 
-	// Create the ground
-	const ground = world.CreateBody(new box2D.b2BodyDef());
+	// Create particle system
+	var particleSystemDef = new b2ParticleSystemDef()
+	particleSystemDef.radius = 0.02
+	particleSystemDef.dampingStrength = 0.5
+	particleSystemDef.surfaceTensionPressureStrength = 0.2
+	particleSystemDef.surfaceTensionNormalStrength = 0.2
+	particleSystem = world.CreateParticleSystem(particleSystemDef)
 
-	// Particle system for air
-	const airParticleSystemDef = new b2ParticleSystemDef();
-	airParticleSystemDef.radius = 0.02;
-	const airParticleSystem = world.CreateParticleSystem(airParticleSystemDef);
+	// particle group 1
+	var pgd1 = new b2ParticleGroupDef()
+	var particleShape1 = new b2CircleShape()
+	particleShape1.radius = 0.117
+	particleShape1.position.Set(-4.64, -1.75)
+	pgd1.shape = particleShape1
+	pgd1.flags = b2_tensileParticle | b2_colorMixingParticle
+	pgd1.color.Set(255, 0, 0, 255)
+	pgd1.linearVelocity.Set(0.5, 0)
+	var xf1 = new b2Transform()
+	xf1.SetIdentity()
 
-	// Particle group for air particles (filling the pipe)
-	const airParticleGroupDef = new b2ParticleGroupDef();
-	const airEmitterShape = new b2PolygonShape();
-	airEmitterShape.SetAsBox(0.5, 10); // A rectangular pipe shape
-	airParticleGroupDef.shape = airEmitterShape;
-	airParticleGroupDef.flags = box2D.b2_tensileParticle | box2D.b2_colorMixingParticle;
-	airParticleGroupDef.color.Set(255, 255, 255, 255); // White color for air
-	airParticleSystem.CreateParticleGroup(airParticleGroupDef);
+	// particle group 2
+	var pgd2 = new b2ParticleGroupDef()
+	var particleShape2 = new b2CircleShape()
+	particleShape2.radius = 0.117
+	particleShape2.position.Set(-4.64, 1.75)
+	pgd2.shape = particleShape2
+	pgd2.flags = b2_tensileParticle | b2_colorMixingParticle
+	pgd2.color.Set(0, 255, 0, 255)
+	pgd2.linearVelocity.Set(0.5, 0)
+	var xf2 = new b2Transform()
+	xf2.SetIdentity()
 
-	// Create Fixture for the pipe
-	const pipeFixtureDef = new box2D.b2FixtureDef();
-	pipeFixtureDef.shape = airEmitterShape;
-	ground.CreateFixture(pipeFixtureDef);
+	intervalId = setInterval(function () {
+		particleSystem.DestroyParticlesInShape(particleShape1, xf1)
+		particleSystem.DestroyParticlesInShape(particleShape2, xf2)
+		particleSystem.CreateParticleGroup(pgd1)
+		particleSystem.CreateParticleGroup(pgd2)
 
-	// Particle system for liquid
-	const liquidParticleSystemDef = new b2ParticleSystemDef();
-	liquidParticleSystemDef.radius = 0.02;
-	const liquidParticleSystem = world.CreateParticleSystem(liquidParticleSystemDef);
+		// 获取所有粒子的位置
+		var positions = particleSystem.GetPositionBuffer()
 
-	// Particle group for liquid particles (entering from the left)
-	const liquidParticleGroupDef = new b2ParticleGroupDef();
-	const liquidEmitterShape = new b2PolygonShape();
-	liquidEmitterShape.SetAsBox(0.5, 10);
-	liquidParticleGroupDef.shape = liquidEmitterShape;
-	liquidParticleGroupDef.flags = box2D.b2_tensileParticle | box2D.b2_colorMixingParticle;
-	liquidParticleGroupDef.color.Set(0, 0, 255, 255); // Blue color for liquid
-	liquidParticleGroupDef.position.Set(-9, 0); // Set the initial position to the left of the pipe
-	liquidParticleGroupDef.linearVelocity.Set(5, 0); // Set the initial velocity to the right
-	const liquidParticleGroup = liquidParticleSystem.CreateParticleGroup(liquidParticleGroupDef);
+		console.log(positions.length)
 
-	// Debug draw setup
-	const debugDraw = makeDebugDraw(ctx, pixelsPerMeter, box2D);
-	world.SetDebugDraw(debugDraw);
-
-	// Main loop
-	const maxTimeStepMs = 1 / 60 * 1000;
-	let handle;
-	(function loop(prevMs) {
-		const nowMs = window.performance.now();
-		handle = requestAnimationFrame(loop.bind(null, nowMs));
-		const deltaMs = nowMs - prevMs;
-		step(deltaMs);
-		drawCanvas();
-	}(window.performance.now()));
-
-	function step(deltaMs) {
-		const clampedDeltaMs = Math.min(deltaMs, maxTimeStepMs);
-		world.Step(clampedDeltaMs / 1000, 3, 2);
-
-		// Check if liquid particles reached the right side of the pipe and destroy them
-		const liquidParticleCount = liquidParticleGroup.GetParticleCount();
-		for (let i = 0; i < liquidParticleCount; i++) {
-			const particlePosition = liquidParticleSystem.GetParticlePosition(liquidParticleGroup.GetBufferIndex() + i, new b2Vec2());
-			if (particlePosition.x > 10) { // Assuming the right side of the pipe is at x = 10
-				liquidParticleSystem.DestroyParticle(liquidParticleGroup.GetBufferIndex() + i);
+		// 遍历粒子位置，检查每个粒子的 x 坐标
+		for (var i = 0; i < positions.length; i += 2) {
+			var x = positions[i]
+			// 检查粒子是否到达右边
+			if (x > 4) {
+				// 符合条件的粒子将被销毁
+				particleSystem.DestroyParticle(i / 2) // 使用 i / 2 获取粒子索引
 			}
 		}
-	}
+	}, 50) // Create new particles every 50ms
 
-	function drawCanvas() {
-		ctx.fillStyle = 'rgb(0,0,0)';
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-		ctx.save();
-		ctx.scale(pixelsPerMeter, pixelsPerMeter);
-		const { x, y } = cameraOffsetMetres;
-		ctx.translate(x, y);
-		ctx.lineWidth /= pixelsPerMeter;
-
-		ctx.fillStyle = 'rgb(255,255,0)';
-		world.DebugDraw();
-
-		ctx.restore();
-	}
-});
+	// testbed specific
+	renderer.updateColorParticles = true
+}

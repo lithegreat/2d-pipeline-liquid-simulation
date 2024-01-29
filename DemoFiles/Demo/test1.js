@@ -7,7 +7,7 @@ function test1() {
 	//let world = new b2World(gravity)
 
 	// Create ground
-	let groundDef = new b2BodyDef
+	let groundDef = new b2BodyDef()
 	let ground = world.CreateBody(groundDef)
 	let groundShape = new b2ChainShape()
 	groundShape.vertices[0] = new b2Vec2(-5, -2)
@@ -17,8 +17,8 @@ function test1() {
 	groundShape.CreateLoop()
 	ground.CreateFixtureFromShape(groundShape, 0.0)
 
-	// Create pipe 
-	let pipeDef = new b2BodyDef
+	// Create pipe
+	let pipeDef = new b2BodyDef()
 	let pipe = world.CreateBody(pipeDef)
 	let pipeShape = new b2ChainShape()
 	pipeShape.vertices.push(new b2Vec2(-5, 0.5))
@@ -35,7 +35,7 @@ function test1() {
 	let particleSystem = world.CreateParticleSystem(particleSystemDef)
 
 	// Emit particles into the pipe
-	let pgd1 = new b2ParticleGroupDef()//Group 1
+	let pgd1 = new b2ParticleGroupDef() //Group 1
 	let emitterShape1 = new b2CircleShape()
 	emitterShape1.radius = 0.5
 	emitterShape1.position.Set(-4, 1)
@@ -45,7 +45,7 @@ function test1() {
 	pgd1.linearVelocity.Set(1, 0)
 	particleSystem.CreateParticleGroup(pgd1)
 
-	let pgd2 = new b2ParticleGroupDef()//Group 2
+	let pgd2 = new b2ParticleGroupDef() //Group 2
 	let emitterShape2 = new b2CircleShape()
 	emitterShape2.radius = 0.5
 	emitterShape2.position.Set(-4, -1)
