@@ -80,13 +80,11 @@ Box2DFactory_().then((box2D) => {
 	setInterval(function () {
 		particleSystem.DestroyParticlesInShape(liquidEmitterShape, new b2Transform())
 		const liquidParticleGroup = particleSystem.CreateParticleGroup(liquidParticleGroupDef)
-		// console.log(liquidParticleGroup)
+		console.log(liquidParticleGroup)
 		// 获取粒子的位置
-		const positions = liquidParticleGroup.GetPosition()
-		const count = liquidParticleGroup.GetParticleCount()
-		console.log(positions)
-		console.log(count)
-		// const position = reifyArray(positions, count, 2, b2Vec2)
+		const positionsPointer = particleSystem.GetPositionBuffer()
+		const count = particleSystem.GetParticleCount()
+		const positions = reifyArray(positionsPointer, count * 2, b2Vec2)
 		// 遍历每个粒子的位置
 		for (let i = 0; i < count; i++) {
 			const particleX = positions[i * 2].x // 获取 x 坐标
